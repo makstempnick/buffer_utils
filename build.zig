@@ -4,7 +4,7 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
     const target = b.standardTargetOptions(.{});
 
-    const mod = b.addModule("pixel_utils", .{ .root_source_file = b.path("src/root.zig"), .optimize = optimize, .target = target });
+    const mod = b.addModule("buffer_utils", .{ .root_source_file = b.path("src/root.zig"), .optimize = optimize, .target = target });
 
     const sdl3_dep = b.dependency("sdl3", .{ .optimize = optimize, .target = target });
 

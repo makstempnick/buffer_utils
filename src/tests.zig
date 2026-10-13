@@ -18,28 +18,28 @@ test "test1" {
     const surface = try window.getSurface();
     const pixels = surface.getPixels().?;
 
-    const buffer = try utils.Buffer.init(gpa, 400, 400);
-    defer buffer.deinit(gpa);
+    const buffer = utils.Buffer(u8, 4).from(400, 400, pixels);
+    // defer buffer.deinit(gpa);
 
-    buffer.fill(.{ 255, 0, 0, 255 });
+    const depth = try utils.Buffer(f32, 1).init(gpa, 100, 100);
+    defer depth.deinit(gpa);
 
-    const image = try utils.Buffer.init(gpa, 100, 100);
-    defer image.deinit(gpa);
-
-    image.fill(.{ 0, 255, 0, 255 });
-
-    image.drawOnOther(&buffer, 200, 200, 100, 100);
+    for (100..300) |x| {
+        for (100..300) |y| {
+            buffer.setPos(x, y, .{ 0, 0, 255, 255 });
+        }
+    }
 
     var running = true;
     while (running) {
-        for (0..buffer.colors.len / 4) |i| {
-            const index = i * 4;
+        // for (0..buffer.values.len / 4) |i| {
+        //     const index = i * 4;
 
-            pixels[index] = buffer.colors[index + 2];
-            pixels[index + 1] = buffer.colors[index + 1];
-            pixels[index + 2] = buffer.colors[index];
-            pixels[index + 3] = buffer.colors[index + 3];
-        }
+        //     pixels[index] = buffer.values[index + 2];
+        //     pixels[index + 1] = buffer.values[index + 1];
+        //     pixels[index + 2] = buffer.values[index];
+        //     pixels[index + 3] = buffer.values[index + 3];
+        // }
 
         try window.updateSurface();
 
